@@ -85,19 +85,23 @@ class FBConnect_PSBLinkModuleFrontController extends ModuleFrontController
 			if ($customer_id > 0 && $customer_id != $this->context->customer->id)
 			{
 				$this->context->smarty->assign(array(
-					'fbconnect_psb_status' => 'error',
+					'fbconnect_psb_status' => 'error_1',
 					'fbconnect_psb_massage' => 'The Facebook account is already linked to another account.',
-					'fbconnect_psb_fb_picture' => 'https://graph.facebook.com/'.$fb_user_profile['username'].'/picture',
-					'fbconnect_psb_fb_name' => $fb_user_profile['name']
+					'fbconnect_psb_fb_picture' => 'https://graph.facebook.com/'.$fb_user_profile['id'].'/picture',
+					'fbconnect_psb_fb_name' => $fb_user_profile['name'],
+					'fbconnect_psb_fb_link' => $fb_user_profile['link'] 
 				));
 			}
 			else if ($customer_id == $this->context->customer->id)
 			{
+				foreach($fb_user_profile as $k=>$v){$profile .= "<br/>".$k." => ".$v;}
 				$this->context->smarty->assign(array(
 					'fbconnect_psb_status' => 'linked',
 					'fbconnect_psb_massage' => 'The Facebook account is already linked to your account.',
-					'fbconnect_psb_fb_picture' => 'https://graph.facebook.com/'.$fb_user_profile['username'].'/picture',
-					'fbconnect_psb_fb_name' => $fb_user_profile['name']
+					'fbconnect_psb_fb_picture' => 'https://graph.facebook.com/'.$fb_user_profile['id'].'/picture',
+					'fbconnect_psb_fb_name' => $fb_user_profile['name'],
+					'fbconnect_psb_fb_link' => $fb_user_profile['link'],
+					'fbconnect_psb_fb_profile' => $profile
 				));
 			}
 			else
@@ -130,8 +134,9 @@ class FBConnect_PSBLinkModuleFrontController extends ModuleFrontController
 					$this->context->smarty->assign(array(
 						'fbconnect_psb_status' => 'conform',
 						'fbconnect_psb_massage' => 'Your Facebook account has been linked to account.',
-						'fbconnect_psb_fb_picture' => 'https://graph.facebook.com/'.$fb_user_profile['username'].'/picture',
-						'fbconnect_psb_fb_name' => $fb_user_profile['name']
+						'fbconnect_psb_fb_picture' => 'https://graph.facebook.com/'.$fb_user_profile['id'].'/picture',
+						'fbconnect_psb_fb_name' => $fb_user_profile['name'],
+						'fbconnect_psb_fb_link' => $fb_user_profile['link'] 
 					));
 				}
 				else
@@ -139,7 +144,7 @@ class FBConnect_PSBLinkModuleFrontController extends ModuleFrontController
 // This could happen if the user logged off from FB but not the prestashop
 // And 2nd user logs in to facebook than opens this page.
 					$this->context->smarty->assign(array(
-						'fbconnect_psb_status' => 'error',
+						'fbconnect_psb_status' => 'error_2',
 						'fbconnect_psb_massage' => 'Sorry, there was a error when we tried to link your account with Facebook. Our Site admin has been notified of error, once it\'s resolved you will be sent a email notice.',
 					));
 
